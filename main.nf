@@ -5,7 +5,7 @@ process VIRSORTER2 {
     publishDir "${params.outdir}/virsorter2", mode: params.publish_dir_mode
 
     container "quay.io/biocontainers/virsorter=2.2.3--pyhdfd78af_1"
-    conda (params.enable_conda ? "virsorter=2.2.3" : null)
+    conda (params.enable_conda ? "bioconda::virsorter=2.2.3" : null)
 	
 	input:
 	path fasta
@@ -31,6 +31,7 @@ process DRAMV {
     publishDir "${params.outdir}/DRAMv", mode: params.publish_dir_mode
 
     container "quay.io/biocontainers/dram=1.2.4--pyhdfd78af_1"
+    conda (params.enable_conda ? "bioconda::dram=1.2.4" : null)
 	
 	input:
 	path fasta
@@ -55,6 +56,9 @@ process DRAMV {
 
 process ACC_TO_TAXID{
 	publishDir "${params.outdir}/esearch", mode: params.publish_dir_mode
+
+	container "quay.io/biocontainers/entrez-direct=15.6--he881be0_1"
+    conda (params.enable_conda ? "bioconda::dram=1.2.4" : null)	
 	
     input:
     val ids
@@ -77,6 +81,7 @@ process TAXONKIT_LINEAGE {
     publishDir "${params.outdir}/taxonkit", mode: params.publish_dir_mode
 
     container "quay.io/biocontainers/taxonkit=0.8.0--h9ee0642_0"
+    conda (params.enable_conda ? "bioconda::taxonkit=0.8.0" : null)
 	
 	input:
 	path taxids
@@ -96,7 +101,8 @@ process VOTE {
     publishDir "${params.outdir}/consensus", mode: params.publish_dir_mode
 
 	container "nakor:metaflowmics-python=0.0.1"
-
+	conda (params.enable_conda ? "conda-forge::pandas" : null)
+	
 	input:
 	path mapping
 	path lineages
